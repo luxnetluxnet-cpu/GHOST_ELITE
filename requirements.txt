@@ -1,6 +1,5 @@
 flask
 requests
-pandas==2.0.3
+pandas
 pandas_ta
 gunicorn
-

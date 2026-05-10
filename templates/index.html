@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOST TRADER ELITE</title>
+    <style>
+        body { background-color: #0a0a0a; color: white; font-family: sans-serif; text-align: center; }
+        .card { background: #141414; border: 1px solid #333; border-radius: 15px; margin: 20px; padding: 20px; }
+        .status { font-size: 1.5em; font-weight: bold; margin: 15px 0; }
+        .price { font-size: 2em; color: #00ffd5; }
+        .box { display: flex; justify-content: space-around; margin-top: 20px; }
+        .btn { background: #00ffd5; color: black; padding: 10px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1 style="color: #00ffd5;">GHOST <span style="color: white;">TRADER</span></h1>
+    <p>V13.0 ELITE | BY MOHAMED NAOUI</p>
+
+    <div id="cards-container"></div>
+
+    <script>
+        async function updateSignals() {
+            const res = await fetch('/api/data');
+            const data = await res.json();
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+
+            for (let pair in data) {
+                const signal = data[pair];
+                container.innerHTML += `
+                    <div class="card">
+                        <h2>${pair.toUpperCase()}</h2>
+                        <div class="price">$${signal.price}</div>
+                        <div class="status" style="color: ${signal.color}">${signal.status}</div>
+                        <div class="box">
+                            <div>STOP LOSS<br><span style="color: #ff0055">${signal.sl}</span></div>
+                            <div>TARGET PRICE<br><span style="color: #00ffd5">${signal.tp}</span></div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        setInterval(updateSignals, 5000);
+        updateSignals();
+    </script>
+</body>
+</html>
